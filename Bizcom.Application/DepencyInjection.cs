@@ -17,6 +17,10 @@ namespace Bizcom.Application
     {
         public static IServiceCollection ApplicationServices(this IServiceCollection _services)
         {
+            _services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(DepencyInjection).Assembly);
+            });
             _services.AddScoped<ICurrentUserService, CurrentUserService>();
             _services.AddScoped<ITokenService, TokenService>();
 
@@ -27,7 +31,6 @@ namespace Bizcom.Application
 
             IMapper mapper = mappingconfig.CreateMapper();
             _services.AddSingleton(mapper);
-            _services.AddMediatR(typeof(DepencyInjection).Assembly);
 
             return _services;
         }
