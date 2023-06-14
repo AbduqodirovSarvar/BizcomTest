@@ -16,29 +16,29 @@ namespace Bizcom.Api.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("Courses/AverageScoreMax")]
-        public async Task<IActionResult> GetCourseMaxAverageScore(GetStudentCourseWhichAverageScoreMaxQuery query)
+        [HttpGet("AverageScoreMax")]
+        public async Task<IActionResult> GetCourseMaxAverageScore()
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await _mediator.Send(new GetStudentCourseWhichAverageScoreMaxQuery()));
         }
 
-        [HttpGet("Course/MaxScore")]
-        public async Task<IActionResult> GetCourseMaxScore(GetStudentCourseWhichGetMaxScoreQuery query)
+        [HttpGet("MaxScore")]
+        public async Task<IActionResult> GetCourseMaxScore()
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await _mediator.Send(new GetStudentCourseWhichGetMaxScoreQuery()));
         }
 
-        [HttpGet("Course/10StudentScoreOver80")]
-        public async Task<IActionResult> GetCourse10StudentScoreOver80(GetTeacherCoursewhichNstudentAndOverMScoreQuery query)
+        [HttpGet("10StudentScoreOver80")]
+        public async Task<IActionResult> GetCourse10StudentScoreOver80()
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await _mediator.Send(new GetTeacherCoursewhichNstudentAndOverMScoreQuery()));
         }
 
-        [Authorize("TeacherActions")]
+/*        [Authorize("TeacherActions")]*/
         [HttpGet("AllCourseForTeacher")]
-        public async Task<IActionResult> GetAllCurrentTeacher(GetAllCourseForTeacherQuery query)
+        public async Task<IActionResult> GetAllCurrentTeacher()
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await _mediator.Send(new GetAllCourseForTeacherQuery()));
         }
     }
 }

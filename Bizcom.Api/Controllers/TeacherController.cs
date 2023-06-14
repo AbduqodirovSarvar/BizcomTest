@@ -18,13 +18,13 @@ namespace Bizcom.Api.Controllers
         }
 
         [HttpGet("GetAllTeacherOverAge")]
-        public async Task<IActionResult> GetAllOverAge(GetAllTeachersOverNAgeQuery query)
+        public async Task<IActionResult> GetAllOverAge([FromQuery] GetAllTeachersOverNAgeQuery query)
         {
             return Ok(await _mediator.Send(query));
         }
 
         [HttpGet("GetTeacherStudentScoreOverN")]
-        public async Task<IActionResult> GetForStudentOverN(GetTeachersForStudentsScoreOverNQuery query)
+        public async Task<IActionResult> GetForStudentOverN([FromQuery] GetTeachersForStudentsScoreOverNQuery query)
         {
             return Ok(await _mediator.Send(query));
         }

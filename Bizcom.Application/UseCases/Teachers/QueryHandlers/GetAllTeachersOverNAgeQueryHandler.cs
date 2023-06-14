@@ -2,6 +2,7 @@
 using Bizcom.Application.Abstractions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Teachers.Queries;
+using Bizcom.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,9 @@ namespace Bizcom.Application.UseCases.Teachers.QueryHandlers
         }
         public async Task<List<UserViewModel>> Handle(GetAllTeachersOverNAgeQuery request, CancellationToken cancellationToken)
         {
-            var teachers = await _context.Users
+            List<User> teachers = await _context.Users
                 .Where(x => (_context.Teachers.Any(t => t.UserId == x.Id)) 
-                    && (DateTime.Now.Year - x.BirthDate.Year) > 55 
+                    && (DateTime.Now.Year - x.BirthDate.Year) > request.Age 
                         & (DateTime.Today.DayOfYear - x.BirthDate.DayOfYear) >= 0)
                             .ToListAsync(cancellationToken);
 

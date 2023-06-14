@@ -2,6 +2,7 @@
 using Bizcom.Application.Abstractions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Courses.Queries;
+using Bizcom.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
         }
         public async Task<List<CourseViewModel>> Handle(GetTeacherCoursewhichNstudentAndOverMScoreQuery request, CancellationToken cancellationToken)
         {
-            var courses = await _context.CoursesStudents
+            List<Course?> courses = await _context.CoursesStudents
                                     .Include(x => x.Course).Include(s => s.Student)
                                         .Where(x => x.Student != null 
                                             && x.Student.UserId == _currentUserService.UserId 

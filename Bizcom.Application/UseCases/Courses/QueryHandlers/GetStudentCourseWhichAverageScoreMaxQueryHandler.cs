@@ -25,12 +25,12 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
         public Task<CourseViewModel> Handle(GetStudentCourseWhichAverageScoreMaxQuery request, CancellationToken cancellationToken)
         {
             
-            var course = _context.CoursesStudents
+             Course? course = _context.CoursesStudents
                                 .Include(c => c.Course)
                                     .GroupBy(x => x.Course)
                                         .OrderByDescending(x => x.Average(s => s.Score))
                                             .Select(x => x.Key)
-                                                .FirstOrDefaultAsync(cancellationToken);
+                                                .FirstOrDefaultAsync(cancellationToken).Result;
 
             if (course == null)
                 throw new NotFoundException("Course");

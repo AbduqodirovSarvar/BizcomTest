@@ -22,7 +22,6 @@ namespace Bizcom.Application
                 cfg.RegisterServicesFromAssembly(typeof(DepencyInjection).Assembly);
             });
             _services.AddScoped<ICurrentUserService, CurrentUserService>();
-            _services.AddScoped<ITokenService, TokenService>();
 
             var mappingconfig = new MapperConfiguration(x =>
             {

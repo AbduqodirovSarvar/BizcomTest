@@ -3,6 +3,7 @@ using Bizcom.Application.Abstractions;
 using Bizcom.Application.Exceptions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Courses.Queries;
+using Bizcom.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
         }
         public async Task<CourseViewModel> Handle(GetStudentCourseWhichGetMaxScoreQuery request, CancellationToken cancellationToken)
         {
-            var student = await _context.Students
+            Student? student = await _context.Students
                                     .FirstOrDefaultAsync(x => x.UserId == _currentUserService.UserId, cancellationToken);
 
             if (student == null)
@@ -33,7 +34,7 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
                 throw new NotFoundException("Student");
             }
 
-            var course = _context.CoursesStudents
+            Course? course = _context.CoursesStudents
                                     .Where(x => x.StudentId == student.Id)
                                         .Include(c => c.Course)
                                             .OrderByDescending(x => x.Score)

@@ -2,6 +2,7 @@
 using Bizcom.Application.Abstractions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Students.Queries;
+using Bizcom.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Bizcom.Application.UseCases.Students.QueryHandlers
             int august12 = new DateTime(DateTime.Now.Year, 8, 12).DayOfYear;
             int september18 = new DateTime(DateTime.Now.Year, 9, 18).DayOfYear;
 
-            var students = await _context.Users
+            List<User> students = await _context.Users
                 .Where(x => (_context.Students.Any(s => s.UserId == x.Id)) 
                     && (august12 <= x.BirthDate.DayOfYear & september18 >= x.BirthDate.DayOfYear))
                         .ToListAsync(cancellationToken);

@@ -2,6 +2,7 @@
 using Bizcom.Application.Abstractions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Students.Queries;
+using Bizcom.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Bizcom.Application.UseCases.Students.QueryHandlers
         }
         public async Task<List<UserViewModel>> Handle(GetAllStudentsByNameContainQuery request, CancellationToken cancellationToken)
         {
-            var students = await _context.Users
+            List<User> students = await _context.Users
                 .Where(x => (_context.Students.Any(s => s.UserId == x.Id)) 
                     && (x.FirstName.ToLower().Contains(request.Name.ToLower()) 
                         | x.LastName.ToLower().Contains(request.Name.ToLower())))

@@ -31,7 +31,7 @@ namespace Bizcom.Application.UseCases.Teachers.QueryHandlers
                                                     && c.StudentId == _currentUserService.UserId)))
                                                         .Include(x => x.Teacher).Select(x => x.Teacher);
 
-            var teachers = await _context.Users
+            List<User> teachers = await _context.Users
                                 .Where(x => studentCourseTeachers.Any(t => t != null && t.UserId == x.Id))
                                     .ToListAsync(cancellationToken);
 

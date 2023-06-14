@@ -2,6 +2,7 @@
 using Bizcom.Application.Abstractions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Users.Queries;
+using Bizcom.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,15 +28,15 @@ namespace Bizcom.Application.UseCases.Users.QueryHandlers
                             .Where(x => x.Phone.Substring(3, 5) == "90" 
                                 | x.Phone.Substring(3, 5) == "91");
 
-            var students = users.Where(x => (_context.Students.Any(s => s.UserId == x.Id)))
-                                    .ToListAsync(cancellationToken);
+            var students = users.Where<User>(x => _context.Students.Any(s => s.UserId == x.Id))
+                                    .ToListAsync(cancellationToken).Result;
 
             var teachers = users.Where(x => (_context.Teachers.Any(t => t.UserId == x.Id)))
-                                    .ToListAsync(cancellationToken);
+                                    .ToListAsync(cancellationToken).Result;
 
             AllUsersViewModel viewModel = new AllUsersViewModel();
-            viewModel.Teachers = _mapper.Map<List<UserViewModel>>(teachers);
-            viewModel.Students = _mapper.Map<List<UserViewModel>>(students);
+            viewModel.Teachers.AddRange(_mapper.Map<List<UserViewModel>>(teachers));
+            viewModel.Students.AddRange(_mapper.Map<List<UserViewModel>>(students));
 
             return Task.FromResult(viewModel);
         }

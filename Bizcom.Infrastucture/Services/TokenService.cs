@@ -1,4 +1,7 @@
 ﻿using Bizcom.Application.Abstractions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,10 +11,16 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bizcom.Application.Services
+namespace Bizcom.Infrastucture.Services
 {
     public class TokenService : ITokenService
     {
+        private readonly JWTConfiguration _configuration;
+        public TokenService(IOptions<JWTConfiguration> config)
+        {
+            _configuration = config.Value;
+        }
+
         public string GetAccessToken(Claim[] claims)
         {
             Claim[] jwtClaim = new Claim[]
@@ -22,11 +31,18 @@ namespace Bizcom.Application.Services
 
             var jwtCLaims = claims.Concat(jwtClaim);
 
+            var credentials = new SigningCredentials(
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.Secret)),
+                SecurityAlgorithms.HmacSha256
+            );
+
+
             var token = new JwtSecurityToken(
-                "Something",
-                "Something",
+                _configuration.ValidIssuer,
+                _configuration.ValidAudience,
                 jwtCLaims,
-                expires: DateTime.UtcNow.AddDays(1)
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: credentials
                 );
 
             var tokenHandler = new JwtSecurityTokenHandler();

@@ -1,5 +1,6 @@
 ﻿using Bizcom.Application.Abstractions;
 using Bizcom.Infrastucture.DbContexts;
+using Bizcom.Infrastucture.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,18 +23,25 @@ namespace Bizcom.Infrastucture
                 => options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
 
             _services.AddScoped<IAppDbContext, AppDbContext>();
+            _services.AddScoped<ITokenService, TokenService>();
+
+            _services.Configure<JWTConfiguration>(_configuration.GetSection("JWTConfiguration"));
 
             _services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
                         ValidateLifetime = true,
-                        ValidateIssuerSigningKey = false
+                        ValidateIssuerSigningKey = true,
+                        ValidAudience = _configuration["JWTConfiguration:ValidAudience"],
+                        ValidIssuer = _configuration["JWTConfiguration:ValidIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTConfiguration:Secret"]))
                     };
                 });
+
 
             _services.AddAuthorization(option =>
             {

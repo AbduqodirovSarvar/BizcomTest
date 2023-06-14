@@ -16,9 +16,9 @@ namespace Bizcom.Api.Controllers
         }
 
         [HttpGet("GetAllUserBeelineNum")]
-        public async Task<IActionResult> GetAllBeeline(GetAllUserWithBeelineQuery query)
+        public async Task<IActionResult> GetAllBeeline()
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await _mediator.Send(new GetAllUserWithBeelineQuery()));
         }
     }
 }

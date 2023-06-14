@@ -18,19 +18,19 @@ namespace Bizcom.Api.Controllers
         }
 
         [HttpGet("GetAllStudentByName")]
-        public async Task<IActionResult> GetAllStudentContainName(GetAllStudentsByNameContainQuery query)
+        public async Task<IActionResult> GetAllStudentContainName([FromQuery] GetAllStudentsByNameContainQuery query)
         {
             return Ok(await _mediator.Send(query));
         }
 
         [HttpGet("GetAllStudentFromDateToDate")]
-        public async Task<IActionResult> GetAllStudentForDate(GetAllStudentsFromDateToDateQuery query)
+        public async Task<IActionResult> GetAllStudentForDate()
         {
-            return Ok(await _mediator.Send(query));
+            return Ok(await _mediator.Send(new GetAllStudentsFromDateToDateQuery()));
         }
 
         [HttpGet("GetAllStudentToAge")]
-        public async Task<IActionResult> GetAllStudentToAge(GetAllStudentToNYearsOldQuery query)
+        public async Task<IActionResult> GetAllStudentToAge([FromQuery] GetAllStudentToNYearsOldQuery query)
         {
             return Ok(await _mediator.Send(query));
         }
