@@ -1,5 +1,9 @@
 ﻿using AutoMapper;
+using Bizcom.Application.Abstractions;
 using Bizcom.Application.Mapper;
+using Bizcom.Application.Services;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,14 +15,19 @@ namespace Bizcom.Application
 {
     public static class DepencyInjection
     {
-        public static IServiceCollection Services(this IServiceCollection _services)
+        public static IServiceCollection ApplicationServices(this IServiceCollection _services)
         {
+            _services.AddScoped<ICurrentUserService, CurrentUserService>();
+            _services.AddScoped<ITokenService, TokenService>();
+
             var mappingconfig = new MapperConfiguration(x =>
             {
                 x.AddProfile(new Mapping());
             });
+
             IMapper mapper = mappingconfig.CreateMapper();
-            _services.AddSingleton<IMapper>(mapper);
+            _services.AddSingleton(mapper);
+            _services.AddMediatR(typeof(DepencyInjection).Assembly);
 
             return _services;
         }

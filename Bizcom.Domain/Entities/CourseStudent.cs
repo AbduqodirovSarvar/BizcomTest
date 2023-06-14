@@ -11,9 +11,9 @@ namespace Bizcom.Domain.Entities
     {
         public int Id { get; set; }
         public int StudentId { get; set; }
-        public Student? Student { get; set; }
+        [ForeignKey(nameof(StudentId))] public Student? Student { get; set; }
         public int CourseId { get; set; }
-        public Course? Course { get; set; }
+        [ForeignKey(nameof(StudentId))] public Course? Course { get; set; }
         public int Score { get; set; }
     }
 }

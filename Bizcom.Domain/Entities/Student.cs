@@ -13,6 +13,6 @@ namespace Bizcom.Domain.Entities
         public int UserId { get; set; }
         [ForeignKey(nameof(UserId))] public User? UserStudent { get; set; }
         public int StudentRegNumber { get; set; }
-        public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
+        public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
     }
 }

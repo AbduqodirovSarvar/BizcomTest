@@ -10,5 +10,6 @@ namespace Bizcom.Application.UseCases.Courses.Queries
 {
     public class GetStudentCourseWhichGetMaxScoreQuery : IQuery<CourseViewModel>
     {
+        public GetStudentCourseWhichGetMaxScoreQuery() { }
     }
 }

@@ -24,8 +24,8 @@ namespace Bizcom.Application.UseCases.Users.QueryHandlers
         public Task<AllUsersViewModel> Handle(GetAllUserWithBeelineQuery request, CancellationToken cancellationToken)
         {
             var users = _context.Users
-                .Where(x => x.Phone.Substring(3, 5) == "90" 
-                    | x.Phone.Substring(3, 5) == "91");
+                            .Where(x => x.Phone.Substring(3, 5) == "90" 
+                                | x.Phone.Substring(3, 5) == "91");
 
             var students = users.Where(x => (_context.Students.Any(s => s.UserId == x.Id)))
                                     .ToListAsync(cancellationToken);

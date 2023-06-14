@@ -27,10 +27,12 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
         {
             var courses = await _context.CoursesStudents
                                     .Include(x => x.Course).Include(s => s.Student)
-                                        .Where(x => x.Student.UserId == _currentUserService.UserId && x.Score >= 80)
-                                            .GroupBy(c => c.Course)
-                                                .Where(x => x.Count(sc => sc.Score >= 80) >= 10)
-                                                    .Select(x => x.Key).ToListAsync(cancellationToken);
+                                        .Where(x => x.Student != null 
+                                            && x.Student.UserId == _currentUserService.UserId 
+                                                && x.Score >= 80)
+                                                    .GroupBy(c => c.Course)
+                                                        .Where(x => x.Count(sc => sc.Score >= 80) >= 10)
+                                                            .Select(x => x.Key).ToListAsync(cancellationToken);
 
             return _mapper.Map<List<CourseViewModel>>(courses);
         }

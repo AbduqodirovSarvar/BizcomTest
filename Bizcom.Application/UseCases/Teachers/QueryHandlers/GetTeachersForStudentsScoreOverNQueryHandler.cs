@@ -27,12 +27,13 @@ namespace Bizcom.Application.UseCases.Teachers.QueryHandlers
         {
             var studentCourseTeachers = _context.Courses
                                             .Where(x => (_context.CoursesStudents.Any(c => c.CourseId == x.Id 
-                                                && c.Score >= request.Score && c.StudentId == _currentUserService.UserId)))
-                                                    .Include(x => x.Teacher).Select(x => x.Teacher);
+                                                && c.Score >= request.Score 
+                                                    && c.StudentId == _currentUserService.UserId)))
+                                                        .Include(x => x.Teacher).Select(x => x.Teacher);
 
             var teachers = await _context.Users
-                                .Where(x => studentCourseTeachers != null
-                                    && (studentCourseTeachers.Any(t => t.UserId == x.Id))).ToListAsync(cancellationToken);
+                                .Where(x => studentCourseTeachers.Any(t => t != null && t.UserId == x.Id))
+                                    .ToListAsync(cancellationToken);
 
             return _mapper.Map<List<UserViewModel>>(teachers);
         }

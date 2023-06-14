@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bizcom.Application.Models.VIewModels
 {
-    internal class TeacherViewModel
+    public class TeacherViewModel
     {
     }
 }

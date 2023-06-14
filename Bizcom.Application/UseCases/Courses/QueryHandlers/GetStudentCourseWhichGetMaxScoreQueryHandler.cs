@@ -33,7 +33,12 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
                 throw new NotFoundException("Student");
             }
 
-            var course = _context.CoursesStudents.Where(x => x.StudentId == student.Id).Include(c => c.Course).OrderByDescending(x => x.Score).Select(c => c.Course).First();
+            var course = _context.CoursesStudents
+                                    .Where(x => x.StudentId == student.Id)
+                                        .Include(c => c.Course)
+                                            .OrderByDescending(x => x.Score)
+                                                .Select(c => c.Course)
+                                                    .First();
 
             if (course == null)
             {

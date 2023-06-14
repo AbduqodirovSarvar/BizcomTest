@@ -26,7 +26,8 @@ namespace Bizcom.Application.UseCases.Authorize.CommandHandlers
         public async Task<UserViewModel> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
             bool HasUser = await _context.Users
-                                    .AnyAsync(x => x.Email == command.Email | x.Phone == command.Phone, cancellationToken);
+                                    .AnyAsync(x => x.Email == command.Email 
+                                        | x.Phone == command.Phone, cancellationToken);
             
             if (HasUser)
                 throw new AlreadyExistsException("User");
