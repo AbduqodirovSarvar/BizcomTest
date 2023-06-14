@@ -1,0 +1,21 @@
+﻿using Bizcom.Application.Abstractions;
+using Bizcom.Application.Models.VIewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+namespace Bizcom.Application.UseCases.Authorize.Commands
+{
+    public class RegisterCommand : ICommand<UserViewModel>
+    {
+        [Required] public string FirstName { get; set; } = string.Empty;
+        [Required] public string LastName { get; set; } = string.Empty;
+        [Required] public string Email { get; set; } = string.Empty;
+        [Required] public string Phone { get; set; } = string.Empty;
+        [Required] public DateOnly BirthDate { get; set; }
+    }
+}
