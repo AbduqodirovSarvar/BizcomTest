@@ -26,8 +26,6 @@
     <Folder Include="UseCases\Courses\CommandHandlers\" />
     <Folder Include="UseCases\Students\CommandHandlers\" />
     <Folder Include="UseCases\Students\Commands\" />
-    <Folder Include="UseCases\Teachers\CommandHandlers\" />
-    <Folder Include="UseCases\Teachers\Commands\" />
     <Folder Include="UseCases\Users\Commands\" />
     <Folder Include="UseCases\Users\CommandHandlers\" />
   </ItemGroup>

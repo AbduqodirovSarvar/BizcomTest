@@ -19,6 +19,7 @@ namespace Bizcom.Infrastucture.DbContexts
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseStudent> CoursesStudents { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

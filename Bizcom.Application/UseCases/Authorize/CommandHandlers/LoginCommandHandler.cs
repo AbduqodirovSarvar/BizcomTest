@@ -45,6 +45,9 @@ namespace Bizcom.Application.UseCases.Authorize.CommandHandlers
             else if(await _context.Students.AnyAsync(x => x.UserId == user.Id, cancellationToken))
                 claims.Add(new Claim(ClaimTypes.Role, "Student"));
 
+            else if(await _context.Admins.AnyAsync(x => x.UserId == user.Id, cancellationToken))
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
             return _tokenService.GetAccessToken(claims.ToArray());
         }
     }

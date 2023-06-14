@@ -37,6 +37,11 @@ namespace Bizcom.Infrastucture
 
             _services.AddAuthorization(option =>
             {
+                option.AddPolicy("AdminActions", policy =>
+                {
+                    policy.RequireClaim(ClaimTypes.Role, "Admin");
+                });
+
                 option.AddPolicy("TeacherActions", policy =>
                 {
                     policy.RequireClaim(ClaimTypes.Role, "Teacher");
