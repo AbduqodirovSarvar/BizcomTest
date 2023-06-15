@@ -27,7 +27,7 @@ namespace Bizcom.Application.UseCases.Teachers.QueryHandlers
         {
             var studentCourseTeachers = _context.Courses
                                             .Where(x => (_context.CoursesStudents.Any(c => c.CourseId == x.Id 
-                                                && c.Score >= request.Score 
+                                                && c.Score >= request.Score
                                                     && c.StudentId == _currentUserService.UserId)))
                                                         .Include(x => x.Teacher).Select(x => x.Teacher);
 

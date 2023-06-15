@@ -22,10 +22,14 @@ namespace Bizcom.Api.Controllers
             return Ok(await _mediator.Send(new GetStudentCourseWhichAverageScoreMaxQuery()));
         }
 
-        [HttpGet("MaxScore")]
+        [HttpGet("StudentGetMaxScore")]
         public async Task<IActionResult> GetCourseMaxScore()
         {
-            return Ok(await _mediator.Send(new GetStudentCourseWhichGetMaxScoreQuery()));
+            var result = await _mediator.Send(new GetStudentCourseWhichGetMaxScoreQuery());
+
+            if (result == null)
+                return NotFound();
+            return Ok(result);
         }
 
         [HttpGet("10StudentScoreOver80")]
@@ -34,11 +38,17 @@ namespace Bizcom.Api.Controllers
             return Ok(await _mediator.Send(new GetTeacherCoursewhichNstudentAndOverMScoreQuery()));
         }
 
-/*        [Authorize("TeacherActions")]*/
+        [Authorize("TeacherActions")]
         [HttpGet("AllCourseForTeacher")]
         public async Task<IActionResult> GetAllCurrentTeacher()
         {
             return Ok(await _mediator.Send(new GetAllCourseForTeacherQuery()));
+        }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _mediator.Send(new GetAllCourseQuery()));
         }
     }
 }

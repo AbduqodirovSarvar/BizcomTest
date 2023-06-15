@@ -26,27 +26,27 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
         }
         public async Task<CourseViewModel> Handle(GetStudentCourseWhichGetMaxScoreQuery request, CancellationToken cancellationToken)
         {
-            Student? student = await _context.Students
+            Student? student = await _context.Students.Include(x => x.Courses)
                                     .FirstOrDefaultAsync(x => x.UserId == _currentUserService.UserId, cancellationToken);
 
             if (student == null)
-            {
                 throw new NotFoundException("Student");
-            }
 
-            Course? course = _context.CoursesStudents
+            var courseStudent = await _context.CoursesStudents
                                     .Where(x => x.StudentId == student.Id)
-                                        .Include(c => c.Course)
                                             .OrderByDescending(x => x.Score)
-                                                .Select(c => c.Course)
-                                                    .First();
+                                                    .FirstOrDefaultAsync(cancellationToken);
 
-            if (course == null)
-            {
+            if (courseStudent == null)
+                throw new NotFoundException("Score");
+
+            Course? foundCourse = await _context.Courses
+                                        .FirstOrDefaultAsync(x => x.Id == courseStudent.CourseId, cancellationToken);
+
+            if (foundCourse == null)
                 throw new NotFoundException("Course");
-            }
 
-            return _mapper.Map<CourseViewModel>(course);
+            return _mapper.Map<CourseViewModel>(foundCourse);
         }
     }
 }

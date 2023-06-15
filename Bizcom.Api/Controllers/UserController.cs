@@ -20,5 +20,11 @@ namespace Bizcom.Api.Controllers
         {
             return Ok(await _mediator.Send(new GetAllUserWithBeelineQuery()));
         }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _mediator.Send(new GetAllUserQuery()));
+        }
     }
 }

@@ -22,23 +22,27 @@ namespace Bizcom.Application.UseCases.Users.QueryHandlers
             _context = context;
             _mapper = mapper;
         }
-        public Task<AllUsersViewModel> Handle(GetAllUserWithBeelineQuery request, CancellationToken cancellationToken)
+        public async Task<AllUsersViewModel> Handle(GetAllUserWithBeelineQuery request, CancellationToken cancellationToken)
         {
             var users = _context.Users
-                            .Where(x => x.Phone.Substring(3, 5) == "90" 
-                                | x.Phone.Substring(3, 5) == "91");
+                            .Where(x => x.Phone.Substring(4, 2) == "90"
+                                | x.Phone.Substring(4, 2) == "91");
 
-            var students = users.Where<User>(x => _context.Students.Any(s => s.UserId == x.Id))
-                                    .ToListAsync(cancellationToken).Result;
+            List<User> students = await (from user in _context.Users
+                                            join student in _context.Students on user.Id equals student.UserId
+                                                select user)
+                                         .ToListAsync(cancellationToken);
 
-            var teachers = users.Where(x => (_context.Teachers.Any(t => t.UserId == x.Id)))
-                                    .ToListAsync(cancellationToken).Result;
+            List<User> teachers = await (from user in _context.Users
+                                         join teacher in _context.Teachers on user.Id equals teacher.UserId
+                                         select user)
+                                         .ToListAsync(cancellationToken);
 
             AllUsersViewModel viewModel = new AllUsersViewModel();
             viewModel.Teachers.AddRange(_mapper.Map<List<UserViewModel>>(teachers));
             viewModel.Students.AddRange(_mapper.Map<List<UserViewModel>>(students));
 
-            return Task.FromResult(viewModel);
+            return viewModel;
         }
     }
 }

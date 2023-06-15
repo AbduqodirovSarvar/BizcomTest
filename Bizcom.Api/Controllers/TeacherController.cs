@@ -34,5 +34,11 @@ namespace Bizcom.Api.Controllers
         {
             return Ok(await _mediator.Send(command));
         }
+
+        [HttpGet("All")]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _mediator.Send(new GetAllTeacherQuery()));
+        }
     }
 }

@@ -33,12 +33,9 @@ namespace Bizcom.Application.UseCases.Admins.CommandHandlers
             
             if (course == null)
                 throw new NotFoundException("Course");
+            
+            course.Students.Add(student);
 
-            CourseStudent courseStudent = new CourseStudent();
-            courseStudent.CourseId = request.CourseId;
-            courseStudent.StudentId = request.StudentId;
-
-            await _context.CoursesStudents.AddAsync(courseStudent, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
             return new StudentCourseViewModel()

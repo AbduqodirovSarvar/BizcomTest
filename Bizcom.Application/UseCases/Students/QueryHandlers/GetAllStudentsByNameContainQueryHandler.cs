@@ -23,12 +23,13 @@ namespace Bizcom.Application.UseCases.Students.QueryHandlers
         }
         public async Task<List<UserViewModel>> Handle(GetAllStudentsByNameContainQuery request, CancellationToken cancellationToken)
         {
-            List<User> students = await _context.Users
-                .Where(x => (_context.Students.Any(s => s.UserId == x.Id)) 
-                    && (x.FirstName.ToLower().Contains(request.Name.ToLower()) 
-                        | x.LastName.ToLower().Contains(request.Name.ToLower())))
-                            .ToListAsync(cancellationToken);
-                                       
+            List<User> students = await (from user in _context.Users
+                                         join student in _context.Students on user.Id equals student.UserId
+                                         where user.FirstName.ToLower().Contains(request.Name.ToLower())
+                                         | user.LastName.ToLower().Contains(request.Name.ToLower())
+                                         select user)
+                                         .ToListAsync(cancellationToken);
+
             return _mapper.Map<List<UserViewModel>>(students);
         }
     }

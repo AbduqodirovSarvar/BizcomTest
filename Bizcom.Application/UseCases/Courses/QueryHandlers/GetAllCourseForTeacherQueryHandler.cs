@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bizcom.Application.Abstractions;
+using Bizcom.Application.Exceptions;
 using Bizcom.Application.Models.VIewModels;
 using Bizcom.Application.UseCases.Courses.Queries;
 using Bizcom.Domain.Entities;
@@ -26,9 +27,16 @@ namespace Bizcom.Application.UseCases.Courses.QueryHandlers
 
         public async Task<List<CourseViewModel>> Handle(GetAllCourseForTeacherQuery request, CancellationToken cancellationToken)
         {
+            Teacher? teacher = await _context.Teachers
+                                        .FirstOrDefaultAsync(x => x.UserId == _currentUserService.UserId, cancellationToken);
+            
+            if (teacher == null)
+                throw new NotFoundException("Teacher");
+
+            int teacherId = teacher.Id;
             List<Course> courses = await _context.Courses
-                                    .Where(x => x.TeacherId == _currentUserService.UserId)
-                                        .ToListAsync(cancellationToken);
+                                            .Where(x => x.TeacherId == teacherId)
+                                                .ToListAsync(cancellationToken);
 
             return _mapper.Map<List<CourseViewModel>>(courses);
         }

@@ -42,7 +42,6 @@ namespace Bizcom.Infrastucture
                     };
                 });
 
-
             _services.AddAuthorization(option =>
             {
                 option.AddPolicy("AdminActions", policy =>
