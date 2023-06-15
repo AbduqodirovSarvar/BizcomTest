@@ -4,7 +4,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container. 
 builder.Services.ApplicationServices();
 builder.Services.InfrastructureServices(builder.Configuration);
 builder.Services.AddControllers();
@@ -60,11 +60,21 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/swagger/V1/swagger.json", "Bizcom API");
     });
-}
-
+} 
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
+
+// Add CORS configuration
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    // or configure specific origins, methods, and headers
+});
+
+
 app.UseAuthorization();
 
 app.MapControllers();

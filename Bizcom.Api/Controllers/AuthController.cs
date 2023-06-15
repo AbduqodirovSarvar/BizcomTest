@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace Bizcom.Api.Controllers
 {
@@ -20,9 +21,13 @@ namespace Bizcom.Api.Controllers
             return Ok(await _mediator.Send(command));
         }
         [HttpPost("Login")]
-        public async Task<IActionResult> SignIn([FromBody] LoginCommand command)
+        public async Task<ExpandoObject> SignIn([FromBody] LoginCommand command)
         {
-            return Ok(await _mediator.Send(command));
+            dynamic obj = new ExpandoObject();
+            obj.Token = await _mediator.Send(command);
+            obj.Token = Ok();
+            
+            return obj;
         }
     }
 }
