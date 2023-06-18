@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Bizcom.Api.Controllers
 {
@@ -25,8 +27,15 @@ namespace Bizcom.Api.Controllers
         {
             dynamic obj = new ExpandoObject();
             obj.Token = await _mediator.Send(command);
-            obj.Token = Ok();
-            
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = jwtTokenHandler.ReadJwtToken(obj.Token.ToString());
+            var roleClaim = jwtToken.Claims[3];
+            if(roleClaim != null)
+            {
+                obj.Role = roleClaim.Value;
+            }
+            obj.statusCode = 200;
+
             return obj;
         }
     }
